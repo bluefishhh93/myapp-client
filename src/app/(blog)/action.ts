@@ -1,12 +1,16 @@
 "use server";
 import { authenticatedAction } from "@/lib/safe-action";
-import { createDraftUseCase, updateBlogContentUseCase } from "@/use-case/blog";
+import { createDraftUseCase, updateBlogContentUseCase, updateBlogStatusUseCase, updateBlogTitleUseCase } from "@/use-case/blog";
 import { z } from "zod";
 import sanitizeHtml from "sanitize-html";
 import { revalidatePath } from "next/cache";
 import { sanitizeOptions } from "@/lib/tiptap";
 
-
+enum Status {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
+    PENDING = 'PENDING'
+}
 export const updateBlogContentAction = authenticatedAction
     .createServerAction()
     .input(
@@ -22,6 +26,40 @@ export const updateBlogContentAction = authenticatedAction
             blogId: input.blogId,
             content: input.content,
             title: input.title ?? ""
+        });
+
+        revalidatePath(`/dashboard/blogs/${input.blogId}`);
+    });
+
+export const updateBlogTitleAction = authenticatedAction
+    .createServerAction()
+    .input(
+        z.object({
+            blogId: z.string(),
+            title: z.string(),
+        })
+    )
+    .handler(async ({input, ctx}) => {
+        await updateBlogTitleUseCase(ctx.user, {
+            blogId: input.blogId,
+            title: input.title,
+        });
+
+        revalidatePath(`/dashboard/blogs/${input.blogId}`);
+    });
+
+export const updateBlogStatusAction = authenticatedAction
+    .createServerAction()
+    .input(
+        z.object({
+            blogId: z.string(),
+            status: z.nativeEnum(Status),
+        })
+    )
+    .handler(async ({input, ctx}) => {
+        await updateBlogStatusUseCase(ctx.user, {
+            blogId: input.blogId,
+            status: input.status,
         });
 
         revalidatePath(`/dashboard/blogs/${input.blogId}`);

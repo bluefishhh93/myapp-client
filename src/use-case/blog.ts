@@ -26,6 +26,34 @@ export async function updateBlogContentUseCase(
   await updateBlog(authenticatedUser.accessToken, blogId, updatePayload);
 }
 
+export async function updateBlogTitleUseCase(
+  authenticatedUser: User,
+  {
+    blogId,
+    title,
+  }: {
+    blogId: string;
+    title: string;
+  }
+) {
+  await assertBlogOwner(authenticatedUser, blogId);
+  await updateBlog(authenticatedUser.accessToken, blogId, { title });
+}
+
+export async function updateBlogStatusUseCase(
+  authenticatedUser: User,
+  {
+    blogId,
+    status,
+  }: {
+    blogId: string;
+    status: Status;
+  }
+) {
+  await assertBlogOwner(authenticatedUser, blogId);
+  await updateBlog(authenticatedUser.accessToken, blogId, { status });
+}
+
 export async function createDraftUseCase(
   authenticatedUser: User,
   {

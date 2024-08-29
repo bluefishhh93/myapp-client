@@ -205,7 +205,10 @@
     margin: 2rem 0;
   }
 
-  
+  span {
+    @apply dark:text-gray-400 !important;
+  }
+
 
 }
 
@@ -233,10 +236,34 @@
 .blog-content {
   @apply max-w-5xl mx-auto;
 
+  span {
+    @apply dark:text-gray-200 !important;
+  }
+  code {
+    background-color: rgba(#616161, 0.1);
+    color: #616161;
+  }
+
+  pre {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+
+    code {
+      color: inherit;
+      padding: 0;
+      background: none;
+      font-size: 0.8rem;
+    }
+  }
+
   .ProseMirror {
+    
     @apply text-base leading-relaxed bg-white dark:bg-slate-950 text-gray-800 dark:text-gray-200 p-4 rounded;
 
-    > * + * {
+    >*+* {
       @apply mt-6;
     }
 
@@ -268,7 +295,8 @@
       @apply mb-4;
     }
 
-    ul, ol {
+    ul,
+    ol {
       @apply pl-8 mb-4;
     }
 
@@ -300,14 +328,14 @@
       background-color: rgba(#616161, 0.1);
       color: #616161;
     }
-  
+
     pre {
       background: #0d0d0d;
       color: #fff;
       font-family: "JetBrainsMono", monospace;
       padding: 0.75rem 1rem;
       border-radius: 0.5rem;
-  
+
       code {
         color: inherit;
         padding: 0;
@@ -318,25 +346,32 @@
 
     img {
       @apply w-full max-w-full h-auto rounded-lg shadow-md object-cover;
-  }
-    
+    }
+
 
     .youtube-video {
-      margin: 2rem auto; /* Center the video horizontally and add vertical spacing */
+      margin: 2rem auto;
+      /* Center the video horizontally and add vertical spacing */
       display: flex;
       justify-content: center;
       align-items: center;
-  }
-  
-  .youtube-video iframe {
+    }
+
+    .youtube-video iframe {
       width: 100%;
-      max-width: 100%; /* Ensure the video is responsive */
+      max-width: 100%;
+      /* Ensure the video is responsive */
       height: auto;
-      aspect-ratio: 16 / 9; /* Maintain a 16:9 aspect ratio */
-      border: none; /* Remove the border around the iframe */
-      border-radius: 8px; /* Optional: Add rounded corners to the video */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-  }
-  
+      aspect-ratio: 16 / 9;
+      /* Maintain a 16:9 aspect ratio */
+      border: none;
+      /* Remove the border around the iframe */
+      border-radius: 8px;
+      /* Optional: Add rounded corners to the video */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      /* Optional: Add a subtle shadow */
+    }
+
+
   }
 }

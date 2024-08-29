@@ -7,6 +7,13 @@ import { NotFoundError } from "@/app/utils";
 import { isBlogOwnerUseCase } from "@/use-case/blog";
 import { Button } from "@/components/ui/button";
 import PreviewButton from "../../preview-button";
+import PublicButton from "../../public-button";
+
+enum Status {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
+    DELETED = 'DELETED',
+}
 
 export default async function DraftPage({ params }: { params: { blogId: string } }) {
     const { blogId } = params;
@@ -19,7 +26,7 @@ export default async function DraftPage({ params }: { params: { blogId: string }
 
     const { post } = await getBlogById(blogId);
 
-    if (!post) {
+    if (!post || post.status.toString() === Status.ACTIVE.toString()) {
         throw new NotFoundError("Blog not found");
     }   
 
@@ -29,10 +36,8 @@ export default async function DraftPage({ params }: { params: { blogId: string }
         <>
             <div className="flex justify-end items-center mb-4">
                 <div className="flex space-x-4">
-                    <PreviewButton blogId={blogId} />
-                    <Button className="text-white bg-blue-500 border border-blue-500 rounded-full py-2 px-4 hover:bg-blue-600 dark:bg-blue-700 dark:border-blue-700 dark:hover:bg-blue-800">
-                        Public
-                    </Button>
+                    <PreviewButton blog={post} />
+                    <PublicButton blogId={blogId} />
                 </div>
             </div>
             <div className="">

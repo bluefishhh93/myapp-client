@@ -8,7 +8,8 @@ import Youtube from "@tiptap/extension-youtube";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import sanitizeHtml from "sanitize-html";
-
+import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
+import { lowlight } from "lowlight";
 import { EditorProvider, useCurrentEditor } from "@tiptap/react";
 import { Bold, CodeXml, Heading2, Heading3, Heading4, Heading5, Heading6, ImageIcon, Italic, LinkIcon, List, ListOrdered, YoutubeIcon } from "lucide-react";
 import { useCallback } from "react";
@@ -28,6 +29,8 @@ export const sanitizeOptions = {
         iframe: ['youtube-video']
     }
 };
+
+
 export const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] } as any),
@@ -62,10 +65,9 @@ export const extensions = [
         nocookie: true,
         inline: false
     }),
-    // CodeBlock.configure({
-    //     exitOnTripleEnter: false,
+    // CodeBlockLowlight.configure({
     //     languageClassPrefix: 'language-',
-    //     exitOnArrowDown: false,
+    //     lowlight,
     // })
 ];
 
