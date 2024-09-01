@@ -1,9 +1,10 @@
 // app/verify-email/page.tsx
 import { redirect } from 'next/navigation';
-import api from '@/data-access/rest';
+import {createApi} from '@/data-access/rest';
 
 async function verifyEmail(token: string): Promise<boolean> {
   try {
+    const api = createApi();
     const response = await api.post('/user/verify-email', { token });
     return response.status === 200;
   } catch (error) {

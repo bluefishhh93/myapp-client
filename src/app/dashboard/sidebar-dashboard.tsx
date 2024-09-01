@@ -3,6 +3,7 @@ import React from 'react';
 import ReusableSidebar from '../../components/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Grid, NotepadText, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 
 const DashboardSidebar: React.FC = () => {
   const header = (
@@ -17,15 +18,19 @@ const DashboardSidebar: React.FC = () => {
 
   const content = (
     <>
+    <Link href="/dashboard" passHref>
       <button className="flex w-full font-bold text-slate-500 items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-slate-900 dark:text-white rounded-md">
         <Grid size={20} />
         <span className="text-sm">Overview</span>
       </button>
+    </Link>
+    <Link href="/dashboard/posts" passHref>
       <button className="flex w-full font-bold text-slate-500 items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-slate-900 dark:text-white rounded-md">
         <NotepadText size={20} />
         <span className="text-sm">Articles and drafts</span>
       </button>
-    </>
+    </Link>
+  </>
   );
 
   const footer = (

@@ -1,7 +1,7 @@
 // app/blogs/[blogId]/draft/page.tsx
 import { getCurrentUser } from "@/lib/session";
 import { DraftBlogForm } from "../../draft-blog-form";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getBlogById } from "@/data-access/graphql/blogs";
 import { NotFoundError } from "@/app/utils";
 import { isBlogOwnerUseCase } from "@/use-case/blog";
@@ -18,7 +18,7 @@ enum Status {
 export default async function DraftPage({ params }: { params: { blogId: string } }) {
     const { blogId } = params;
     const user = await getCurrentUser();
-
+    
     if (!user) {
         redirect('/sign-in');
         return null;
@@ -26,8 +26,12 @@ export default async function DraftPage({ params }: { params: { blogId: string }
 
     const { post } = await getBlogById(blogId);
 
+    if(!post) {
+        notFound();
+    }
+
     if (!post || post.status.toString() === Status.ACTIVE.toString()) {
-        throw new NotFoundError("Blog not found");
+        notFound();
     }   
 
     const isAuthor = await isBlogOwnerUseCase(user, blogId);

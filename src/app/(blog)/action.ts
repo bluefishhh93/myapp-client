@@ -78,6 +78,7 @@ export const createDraftAction = authenticatedAction
             title: input.title,
             content: sanitizeHtml(input.content),
         });
+        revalidatePath(`/dashboard/blogs/${newDraft.id}`);
         return {id: newDraft.id};
     });
 

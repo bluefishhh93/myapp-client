@@ -69,6 +69,10 @@ type GetPostByIdResponse = {
     post: Post;
 };
 
+type GetUserPostsResponse = {
+    userPosts: Post[];
+};
+
 type UpdatePostResponse = {
     updatePost: Post;
 };

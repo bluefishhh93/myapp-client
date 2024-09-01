@@ -17,7 +17,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
         {items.map((item, index) => (
           <li key={index} className="flex items-center">
             {index === items.length - 1 ? (
-              <span className="font-semibold text-gray-900">{item.label}</span>
+              <span className="font-semibold text-gray-900 dark:text-gray-400">{item.label}</span>
             ) : item.link ? (
               <Link href={item.link} className="hover:text-gray-700">
                 {item.label}

@@ -1,5 +1,5 @@
 // src/services/userService.ts
-import api from ".";
+import {createApi} from ".";
 import { privateClient } from "@/lib/graphqlClient";
 import { UPDATE_USER_MUTATION } from "@/data-access/graphql/users";
 
@@ -11,26 +11,31 @@ export interface CreateUserData {
 
 const userService = {
   createAndVerify: async (userData: CreateUserData) => {
+    const api = createApi();
     const response = await api.post('/user/create-and-verify', userData);
     return response.data;
   },
 
   generateVerificationToken: async (userId: string) => {
+    const api = createApi();
     const response = await api.post('/user/generate-verification-token', { userId });
     return response.data;
   },
 
   verifyEmail: async (token: string) => {
+    const api = createApi();
     const response = await api.post('/user/verify-email', { token });
     return response.data;
   },
 
   updateName: async (firstname: string, lastname: string) => {
+    const api = createApi();
     const response = await api.put('/user/update-name', { firstname, lastname });
     return response.data;
   },
 
   updateImage: async (image: string) => {
+    const api = createApi();
     const response = await api.put('/user/update-image', { image });
     return response
   },

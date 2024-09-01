@@ -6,6 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Footer } from '@/components/footer';
 import Image from 'next/image';
+import { calculateReadingTime } from '../utils';
 
 type PreviewMode = 'desktop' | 'mobile';
 
@@ -15,16 +16,6 @@ interface BlogPreviewOverlayProps {
   post: Post;
 }
 
-function stripHtmlTags(content: string) {
-  return content.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-}
-
-function calculateReadingTime(content: string) {
-  const plainText = stripHtmlTags(content);
-  const wordsPerMinute = 200;
-  const words = plainText.split(/\s+/).length;
-  return Math.ceil(words / wordsPerMinute);
-}
 
 const BlogPreviewOverlay: React.FC<BlogPreviewOverlayProps> = ({ isOpen, onClose, post }) => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('desktop');

@@ -3,9 +3,10 @@
 import ReusableSidebar from "@/components/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FilePlus, Settings, User } from 'lucide-react';
-import Blog from './sidebar-blog-section';
 import CreateDraftButton from './create-draft-button';
 import { getCurrentUser } from '@/lib/session';
+import { getUserBlogs } from "@/data-access/graphql/blogs";
+import { SibarBlogSection } from "./sidebar-blog-section";
 
 const BlogSidebar: React.FC = async () => {
   const user = await getCurrentUser();
@@ -14,7 +15,7 @@ const BlogSidebar: React.FC = async () => {
     return null;
   }
 
-
+  const { userPosts } = await getUserBlogs({userId: user.id});
 
   const header = (
     <div className="flex items-center gap-4">
@@ -28,8 +29,8 @@ const BlogSidebar: React.FC = async () => {
 
   const content = (
     <>
-      <CreateDraftButton/>
-      <Blog />
+      <CreateDraftButton />
+      <SibarBlogSection blogs={userPosts} />
     </>
   );
 

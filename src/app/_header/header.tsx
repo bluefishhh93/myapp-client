@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings2Icon } from "lucide-react";
+import { BookMarkedIcon, Settings2Icon } from "lucide-react";
 import { HeaderActionsFallback } from "@/app/_header/header-actions-fallback";
 import { SignOutItem } from "@/app/_header/sign-out-item";
 // import {
@@ -24,6 +24,12 @@ import { SignOutItem } from "@/app/_header/sign-out-item";
 import { MenuButton } from "./menu-button";
 import { getProfileImageFullUrl } from "../profile/profile-image";
 import { getProfile } from "@/data-access/graphql/users";
+import WriteButton from "./write-button";
+import { getLastDraftIdUseCase } from "@/use-case/blog";
+import { createDraftAction } from "../(blog)/action";
+import { error } from "console";
+import { redirect } from "next/navigation";
+import { User } from "next-auth";
 
 export async function Header() {
   const user = await getCurrentUser();
@@ -64,6 +70,8 @@ export async function Header() {
   );
 }
 
+
+
 async function ProfileAvatar() {
   const user = await getCurrentUser();
   if (!user) {
@@ -85,6 +93,8 @@ async function ProfileAvatar() {
   );
 }
 
+
+
 async function HeaderActions() {
   const user = await getCurrentUser();
   const isSignedIn = !!user;
@@ -93,6 +103,9 @@ async function HeaderActions() {
     <>
       {isSignedIn ? (
         <>
+          <div className="hidden md:block">
+            <WriteButton user={user} />
+          </div>
           <div className="hidden md:block">
             <ModeToggle />
           </div>
@@ -120,6 +133,14 @@ async function HeaderActions() {
                   className="flex gap-2 items-center cursor-pointer"
                 >
                   <Settings2Icon className="w-4 h-4" /> Settings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/bookmarks"
+                  className="flex gap-2 items-center cursor-pointer"
+                >
+                  <BookMarkedIcon className="w-4 h-4" /> Bookmarks
                 </Link>
               </DropdownMenuItem>
               <SignOutItem />

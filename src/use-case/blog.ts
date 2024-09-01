@@ -1,7 +1,8 @@
 // import { User } from "@/types";
 import { User } from "next-auth";
 import { assertBlogOwner } from "./authorizations";
-import { updateBlog, createDraft } from "@/data-access/graphql/blogs";
+import { updateBlog, createDraft, getUserBlogs } from "@/data-access/graphql/blogs";
+import { getLastDraftId } from "@/data-access/rest/blog";
 
 
 export async function updateBlogContentUseCase(
@@ -96,13 +97,21 @@ export async function isBlogOwnerUseCase(
   }
 }
 
-export async function getBlogsUserUseCase({ }: {
-  authenticatedUser: User | undefined;
-  isPublished: boolean;
+export async function getBlogsUserUseCase({
+  id,
+  published,
+  status,
+}: {
+  id: string;
+  published?: boolean;
+  status?: Status;
+}): Promise<Post[]> {
+  const response = await getUserBlogs({ userId: id, published, status });
+  return response.userPosts;
+}
 
-}){
-  return [
-    // ...(await getBlogsUser({ isPublished: true })),
-    // ...(await getBlogsUser({ isPublished: false })),
-  ];
+export function getLastDraftIdUseCase(
+  authenticatedUser: User
+) {
+  return getLastDraftId(authenticatedUser.accessToken);
 }

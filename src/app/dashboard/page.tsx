@@ -7,13 +7,13 @@ import { HashIcon } from "lucide-react";
 import Image from "next/image";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
-// Dynamically import DropdownMenu components
-const DropdownMenu = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenu), { ssr: false });
-const DropdownMenuTrigger = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuTrigger), { ssr: false });
-const DropdownMenuContent = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuContent), { ssr: false });
-const DropdownMenuLabel = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuLabel), { ssr: false });
-const DropdownMenuSeparator = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuSeparator), { ssr: false });
-const DropdownMenuItem = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuItem), { ssr: false });
+// // Dynamically import DropdownMenu components
+// const DropdownMenu = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenu), { ssr: false });
+// const DropdownMenuTrigger = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuTrigger), { ssr: false });
+// const DropdownMenuContent = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuContent), { ssr: false });
+// const DropdownMenuLabel = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuLabel), { ssr: false });
+// const DropdownMenuSeparator = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuSeparator), { ssr: false });
+// const DropdownMenuItem = dynamic(() => import('@/components/ui/dropdown-menu').then(mod => mod.DropdownMenuItem), { ssr: false });
 
 export default function DashboardPage() {
     return (
@@ -27,10 +27,9 @@ export default function DashboardPage() {
             <main className="flex-1 bg-muted/40 p-4 md:p-6 lg:p-8">
                 <header className="mb-6 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <HashIcon className="h-8 w-8" />
-                        <h1 className="text-2xl font-bold">My Hashnode Blog</h1>
+                        <h1 className="text-3xl font-bold">Overview</h1>
                     </div>
-                    <DropdownMenu>
+                    {/* <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="icon" className="rounded-full">
                                 <Image
@@ -51,7 +50,7 @@ export default function DashboardPage() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Logout</DropdownMenuItem>
                         </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu> */}
                 </header>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <Card className="flex flex-col">

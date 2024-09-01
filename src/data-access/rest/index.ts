@@ -1,13 +1,20 @@
-// src/services/api.ts
-import axios from 'axios';
+import { getCurrentUser } from '@/lib/session';
+import axios, { AxiosInstance } from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
+export const createApi = (token?: string): AxiosInstance => {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-  },
-});
+  };
 
-export default api;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  return axios.create({
+    baseURL: API_BASE_URL,
+    headers,
+  });
+};
+
