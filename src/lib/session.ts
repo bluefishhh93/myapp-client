@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { cookies } from "next/headers";
 import { AuthenticationError } from "@/app/utils";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "./auth-options";
 
 
 export const getCurrentUser = async () => {
