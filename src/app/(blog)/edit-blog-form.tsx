@@ -7,8 +7,12 @@ import { cn } from "@/lib/utils";
 import { EditorProvider, useCurrentEditor } from "@tiptap/react";
 import { MenuBar, extensions } from "@/lib/tiptap";
 import { LoaderButton } from "@/components/loader-button";
-
-
+import { useRouter } from "next/navigation";
+enum Status {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
+    PENDING = 'PENDING'
+}
 export const EditBlogForm = ({
     id,
     content,
@@ -18,6 +22,7 @@ export const EditBlogForm = ({
     content: string,
     isAdminOrAuthor: boolean
 }) => {
+    const router = useRouter();
     const { toast } = useToast();
     const { execute, isPending } = useServerAction(updateBlogContentAction);
     const htmlRef = useRef<string>(content);
@@ -31,7 +36,7 @@ export const EditBlogForm = ({
                     <div className="flex justify-end">
                         <LoaderButton
                             onClick={() => {
-                                execute({ blogId: id, content: htmlRef.current }).then(([, err]) => {
+                                execute({ blogId: id, content: htmlRef.current, status: Status.PENDING }).then(([, err]) => {
                                     if (err) {
                                         toast({
                                             title: "Un-oh!",
@@ -41,9 +46,10 @@ export const EditBlogForm = ({
                                     } else {
                                         toast({
                                             title: "Success!",
-                                            description: "The blog content has been updated",
+                                            description: "The blog content has been updated and is pending review",
                                             variant: "success"
                                         })
+                                        router.push(`/draft/${id}`)
                                     }
                                 })
                             }}

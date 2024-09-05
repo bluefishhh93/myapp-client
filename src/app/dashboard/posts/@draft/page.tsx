@@ -4,7 +4,9 @@ import { getCurrentUser } from "@/lib/session";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { FilePenIcon, TrashIcon, CalendarIcon } from "lucide-react";
+import { FilePenIcon, TrashIcon, CalendarIcon, PenIcon } from "lucide-react";
+import Link from 'next/link';
+import { DeleteBlogButton } from '../../delete-blog-button';
 
 export default async function DraftPage() {
     const user = await getCurrentUser();
@@ -34,7 +36,7 @@ export default async function DraftPage() {
                                 <div className="flex items-center space-x-3 text-sm text-muted-foreground">
                                     <div className="flex items-center space-x-2">
                                         <Avatar className="h-6 w-6">
-                                            <AvatarImage src="/placeholder-user.jpg" alt={user.firstname} />
+                                            <AvatarImage src={user.image || "default-avatar.png"} alt={user.firstname} />
                                             <AvatarFallback>{user.firstname?.charAt(0).toUpperCase()}</AvatarFallback>
                                         </Avatar>
                                         <span>{user.firstname} {user.lastname}</span>
@@ -52,14 +54,19 @@ export default async function DraftPage() {
                                 </div>
                             </div>
                             <div className="flex space-x-2">
-                                <Button variant="outline" size="sm" className="">
-                                    <FilePenIcon className="h-4 w-4 mr-2" />
-                                    Edit
-                                </Button>
-                                <Button variant="outline" size="sm" className="">
-                                    <TrashIcon className="h-4 w-4 mr-2" />
-                                    Delete
-                                </Button>
+                                <Link href={`/draft/${post.id}`} passHref>
+                                    <Button variant="outline" size="sm" className="flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                        <PenIcon className="h-4 w-4" />
+                                        {/* <span>Edit</span> */}
+                                    </Button>
+                                </Link>
+
+                                <DeleteBlogButton blogId={post.id}>
+                                    <Button variant="outline" size="sm" className="flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                        <TrashIcon className="h-4 w-4" />
+                                        {/* <span>Delete</span> */}
+                                    </Button>
+                                </DeleteBlogButton>
                             </div>
                         </div>
                     </CardContent>

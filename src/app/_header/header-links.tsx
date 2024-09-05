@@ -27,7 +27,7 @@ export function HeaderLinks({ isAuthenticated }: { isAuthenticated: boolean }) {
             </Link>
           </Button>
 
-          <Button
+          {/* <Button
             variant={"link"}
             asChild
             className="flex items-center justify-center gap-2"
@@ -35,7 +35,7 @@ export function HeaderLinks({ isAuthenticated }: { isAuthenticated: boolean }) {
             <Link href={"/browse"}>
               <SearchIcon className="w-4 h-4" /> Browse Blogs
             </Link>
-          </Button>
+          </Button> */}
 
           <Button
             variant={"link"}
@@ -59,9 +59,9 @@ export function HeaderLinks({ isAuthenticated }: { isAuthenticated: boolean }) {
             <Link href="/#pricing">Pricing</Link>
           </Button>
 
-          <Button variant={"link"} asChild>
-            <Link href={"/browse"}>Browse Groups</Link>
-          </Button>
+          {/* <Button variant={"link"} asChild>
+            <Link href={"/browse"}>Browse Blogs</Link>
+          </Button> */}
         </div>
       )}
     </>

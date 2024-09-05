@@ -27,20 +27,20 @@ export const DraftBlogForm = ({
     const titleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Define the saveContent function
-    const saveContent = useCallback(() => {
+    const saveContent = useCallback((updatedTitle: string) => {
         setSaveStatus('saving');
-        execute({ blogId: id, content: htmlRef.current, title }).then(([, err]) => {
+        execute({ blogId: id, content: htmlRef.current, title: updatedTitle  }).then(([, err]) => {
             if (err) {
                 setSaveStatus('error');
             } else {
                 setSaveStatus('saved');
-                setTimeout(() => setSaveStatus('idle'), 2000); // Reset status after 2 seconds
+                setTimeout(() => setSaveStatus('idle'), 1000); // Reset status after 2 seconds
             }
         });
-    }, [execute, id, title]);
+    }, [execute, id]);
 
     // Debounce saveContent function
-    const debouncedSave = useCallback(debounce(saveContent, 2000), [saveContent]);
+    const debouncedSave = useCallback(debounce((updatedTitle: string) => saveContent(updatedTitle), 500), [saveContent]);
 
     // Handle title change
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +57,7 @@ export const DraftBlogForm = ({
         titleTimeoutRef.current = setTimeout(() => {
             setIsUpdatingTitle(false);
             if (isAdminOrAuthor) {
-                debouncedSave();
+                debouncedSave(newTitle);
             }
         }, 500); // Adjust this delay as needed
     };
@@ -129,7 +129,7 @@ export const DraftBlogForm = ({
                 onUpdate={({ editor }) => {
                     htmlRef.current = editor.getHTML();
                     if (isAdminOrAuthor) {
-                        debouncedSave();
+                        debouncedSave(title);
                     }
                 }}
                 slotBefore={isAdminOrAuthor ? <MenuBar /> : null}

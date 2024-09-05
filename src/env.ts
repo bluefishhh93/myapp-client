@@ -37,6 +37,7 @@ export const env = createEnv({
     NEXT_PUBLIC_API_URL: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
     NEXT_PUBLIC_UPLOAD_PRESET: z.string().min(1),
+    NEXT_PUBLIC_HOST_NAME: z.string().min(1),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -70,5 +71,6 @@ export const env = createEnv({
     NODE_EMAIL_SERVER_PASSWORD: process.env.NODE_EMAIL_SERVER_PASSWORD,
     NODE_EMAIL_FROM: process.env.NODE_EMAIL_FROM,
     TIPTAP_PRO_TOKEN: process.env.TIPTAP_PRO_TOKEN,
+    NEXT_PUBLIC_HOST_NAME: process.env.NEXT_PUBLIC_HOST_NAME
   },
 });

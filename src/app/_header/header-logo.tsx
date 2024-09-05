@@ -15,11 +15,13 @@ export function HeaderLogo() {
       className="flex gap-2 items-center text-xl"
     >
       <Image
-        className="rounded w-8 h-8"
-        width="50"
-        height="50"
+        className="rounded"
+        width={50}
+        height={50}
         src="/hive-logo.png"
         alt="hero image"
+        priority // Add priority property
+        style={{ width: 'auto', height: 'auto' }} // Ensure aspect ratio is maintained
       />
     </Link>
   );

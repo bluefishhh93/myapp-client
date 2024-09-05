@@ -1,15 +1,18 @@
-import { Bookmark, Heart, MessagesSquare } from "lucide-react";
+"use client";
+import { Bookmark, BookmarkPlusIcon, Heart, MessagesSquare } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import { createExcerpt, sanitizeBlogContent } from "@/app/utils";
+import { ToggleBookmarkButton } from "./toggle-bookmark-button";
+import { ToggleHeartButton } from "./toggle-heart-button";
 
 interface BlogCardProps {
   title: string;
   coverImage: string;
-  content : string;
+  content: string;
   author: {
     name: string;
     avatar: string;
@@ -17,10 +20,14 @@ interface BlogCardProps {
   publishedAt: Date;
   readTime: number;
   slug: string;
+  isBookmarked: boolean;
+  isSignedIn: boolean;
+  heartCount: number;
+  isHearted: boolean;
 }
 
-export function BlogCard({ title, coverImage,content, author, publishedAt, readTime, slug }: BlogCardProps) {
-  
+export function BlogCard({ title, coverImage, content, author, publishedAt, readTime, slug, isBookmarked, isSignedIn, isHearted, heartCount }: BlogCardProps) {
+
   const sanitizedContent = sanitizeBlogContent(content);
   const excerpt = createExcerpt(sanitizedContent);
 
@@ -52,9 +59,10 @@ export function BlogCard({ title, coverImage,content, author, publishedAt, readT
             <Image
               src={coverImage}
               alt={title}
-              layout="fill"
-              objectFit="cover"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes attribute
               className="transition-all duration-300 hover:opacity-80 rounded-r"
+              style={{ objectFit: "cover" }}
             />
           </div>
         </div>
@@ -62,16 +70,32 @@ export function BlogCard({ title, coverImage,content, author, publishedAt, readT
 
       <div className="flex items-center justify-between px-4 py-2">
         <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" className="cursor-not-allowed">
             <MessagesSquare className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400" />
           </Button>
-          <Button variant="ghost" size="sm">
-            <Heart className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400" />
-          </Button>
+          {isSignedIn ? (
+            <ToggleHeartButton blogId={slug} initialHearted={isHearted} initialHeartCount={heartCount} />
+          ) : (
+            <Link href="/sign-in">
+              <Button variant="ghost" size="sm">
+                <Heart className="text-gray-600 dark:text-gray-300" />
+                <span className="ml-1">{heartCount}</span>
+              </Button>
+            </Link>
+          )}
         </div>
-        <Button variant="ghost" size="sm">
-          <Bookmark className="text-gray-600 dark:text-gray-300 hover:text-yellow-600 dark:hover:text-yellow-400" />
-        </Button>
+        {/* <Bookmark className="text-gray-600 dark:text-gray-300 hover:text-yellow-600 dark:hover:text-yellow-400" /> */}
+        {
+          isSignedIn ? (
+            <ToggleBookmarkButton blogId={slug} initialBookmarked={isBookmarked} />
+          ) : (
+            <Link href="/sign-in" >
+              <Button variant="ghost" size="sm" className="hover:text-gray-600 dark:hover:text-gray-300">
+                <BookmarkPlusIcon className="text-gray-600 dark:text-gray-300" />
+              </Button>
+            </Link>
+          )
+        }
       </div>
 
     </div>

@@ -2,7 +2,7 @@ import useSWRInfinite from 'swr/infinite';
 import { getPublishedPosts } from '@/data-access/graphql/blogs';
 import { after } from 'lodash';
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 5;
 
 export function useBlogs(searchTerm = '') {
     const getKey = (pageIndex: number, previousData: any) => {

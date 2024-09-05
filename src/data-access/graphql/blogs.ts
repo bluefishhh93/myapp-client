@@ -14,6 +14,7 @@ query GetPostById($postId: String!) {
     createdAt
     updatedAt
     status
+    heartCount
     author {
       id
       email
@@ -117,6 +118,78 @@ const GET_PUBLISHED_POSTS_QUERY = `
   }
 `;
 
+export const GET_BOOKMARKED_POST_IDS_QUERY = gql`
+  query GetBookmarkedPostIds {
+      bookmarkedPosts {
+        id
+      }
+  }
+`;
+
+export const GET_BOOKMARKED_POSTS_QUERY = gql`
+    query GetBookmarkedPosts{
+        bookmarkedPosts {
+            id
+            title
+            content
+            createdAt
+            author {
+                id
+                email
+                firstname
+                lastname
+                image
+            }
+        }
+    }
+`;
+
+export const TOGGLE_HEART_BLOG_MUTATION = gql`
+  mutation InteractWithPost($postId: String!, $type: InteractionType!) {
+    interactWithPost(postId: $postId, type: $type) {
+      id
+      type
+      user {
+        id
+      }
+      post {
+        id
+      }
+    }
+  }
+`;
+
+export const GET_HEART_COUNT_QUERY = gql`
+  query GetPostInteractions($postId: String!) {
+    postInteractions(postId: $postId) {
+      heart
+    }
+  }
+`;
+
+export const GET_USER_INTERACTION_QUERY = gql`
+  query GetUserInteraction($postId: String!) {
+    getUserInteractions(postId: $postId) {
+      bookmarked
+      hearted
+    }
+  }
+`;
+
+export const GET_POST_INTERACTIONS_QUERY = gql`
+  query GetPostInteractions($postId: String!) {
+    postInteractions(postId: $postId) {
+      heart
+      likedBy {
+        id
+        firstname
+        lastname
+        image
+        email
+      }
+    }
+  }
+`;
 //======================FUNCTION=====================
 export async function getBlogById(id: string) {
   try {
@@ -167,4 +240,43 @@ export async function getPublishedPosts(
     query,
     orderBy,
   });
+}
+
+export async function getBookmarkedPostIds(token: string) {
+  const response = await privateClient(token).request<GetBookmarkedPostIdsResponse>(GET_BOOKMARKED_POST_IDS_QUERY);
+  console.log(response, 'check');
+  return response;
+}
+
+export async function getBookmarkedPosts(token: string) {
+  const response = await privateClient(token).request<GetBookmarkedPostsResponse>(GET_BOOKMARKED_POSTS_QUERY);
+  return response.bookmarkedPosts;
+}
+
+
+
+export async function toggleHeartBlog(token: string, postId: string) {
+  const response = await privateClient(token).request<{ interactWithPost: InteractionResponse }>(
+    TOGGLE_HEART_BLOG_MUTATION,
+    { postId, type: "HEART" }
+  );
+  return response.interactWithPost;
+}
+
+export async function getHeartCount({ blogId }: { blogId: string }) {
+  const response = await client.request<{ postInteractions: { heart: number } }>(GET_HEART_COUNT_QUERY, { postId: blogId });
+  return response.postInteractions.heart;
+}
+
+export async function getUserInteractions(token: string, postId: string): Promise<UserInteraction> {
+  const response = await privateClient(token).request<{ getUserInteractions: UserInteraction }>(
+    GET_USER_INTERACTION_QUERY,
+    { postId }
+  );
+  return response.getUserInteractions;
+}
+
+export async function getPostInteractions({blogId} : {blogId: string}){
+  const response = await client.request<{ postInteractions: PostInteractionResponse }>(GET_POST_INTERACTIONS_QUERY, { postId: blogId });
+  return response.postInteractions;
 }

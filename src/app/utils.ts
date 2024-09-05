@@ -1,5 +1,7 @@
+import { useSafeParams } from "@/lib/params";
 import { jwtDecode } from "jwt-decode";
 import sanitizeHtml from "sanitize-html";
+import { z } from "zod";
 
 export const AUTHENTICATION_ERROR_MESSAGE =
   "You must be logged in to view this content";
@@ -67,4 +69,11 @@ export function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200;
 
   return Math.ceil(words / wordsPerMinute);
+}
+
+export function useBlogIdParam() {
+  const { blogId } = useSafeParams(
+    z.object({ blogId: z.string().pipe(z.coerce.number()) })
+  );
+  return blogId;
 }

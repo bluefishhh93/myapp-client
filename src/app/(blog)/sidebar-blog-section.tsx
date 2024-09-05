@@ -9,7 +9,6 @@ import {
     MoreVertical,
     Trash,
     LinkIcon,
-    Eye,
     FileCheck,
     FileText,
     ExternalLink
@@ -29,36 +28,54 @@ enum Status {
     ACTIVE = "ACTIVE",
     PENDING = "PENDING"
 }
-
-const DropdownMenuItemWithIcon = ({ icon: Icon, iconColor, text }: {
+const DropdownMenuItemWithIcon = ({ icon: Icon, iconColor, text, onClick, className }: {
     icon: React.FC<any>;
     iconColor: string;
     text: string;
+    onClick?: () => void;
+    className?: string;
 }) => (
-    <DropdownMenuItem className="flex items-center space-x-2">
+    <DropdownMenuItem className={cn("flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-800", className)} onClick={onClick}>
         <Icon className={`text-${iconColor}-500`} size={16} />
-        <span className="text-gray-700">{text}</span>
+        <span className="text-gray-700 dark:text-gray-300">{text}</span>
     </DropdownMenuItem>
 );
+const copyArticleLink = (link: string) => {
+    navigator.clipboard.writeText(link)
+    .then(() => {
+        alert('Article link copied to clipboard!');
+    })
+    .catch(err => {
+        console.error('Failed to copy the link: ', err);
+    });;
+}
 
-const BlogEntryDropdown = ({ isPublished }: { isPublished: boolean }) => (
+const BlogEntryDropdown = ({ isPublished , id }: { isPublished: boolean, id: string }) => (
     <DropdownMenu>
         <DropdownMenuTrigger>
             <MoreVertical className="cursor-pointer text-slate-500 hover:text-slate-700" size={20} />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+        <DropdownMenuContent className="w-44 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
             {isPublished ? (
                 <>
-                    <DropdownMenuItemWithIcon icon={LinkIcon} iconColor="blue" text="Copy article link" />
-                    <DropdownMenuItemWithIcon icon={ExternalLink} iconColor="green" text="View on blog" />
+                    <DropdownMenuItemWithIcon 
+                        className="cursor-pointer"
+                        icon={LinkIcon} 
+                        iconColor="blue" 
+                        text="Copy article link"
+                        onClick={() => copyArticleLink(process.env.NEXT_PUBLIC_HOST_NAME + "/blog/" + id)}
+                     />
+                    <DropdownMenuItemWithIcon className="cursor-pointer" icon={ExternalLink} iconColor="green" text="View on blog" onClick={
+                       ()=> window.open(`${process.env.NEXT_PUBLIC_HOST_NAME}/blog/${id}`, '_blank')
+                    }/>
                 </>
             ) : (
                 <>
-                    <DropdownMenuItemWithIcon icon={LinkIcon} iconColor="blue" text="Copy preview link" />
-                    <DropdownMenuItemWithIcon icon={Eye} iconColor="green" text="Preview draft" />
+                    {/* <DropdownMenuItemWithIcon icon={LinkIcon} iconColor="blue" text="Copy preview link" />
+                    <DropdownMenuItemWithIcon icon={Eye} iconColor="green" text="Preview draft" /> */}
                 </>
             )}
-            <DropdownMenuItemWithIcon icon={Trash} iconColor="red" text="Delete" />
+            <DropdownMenuItemWithIcon icon={Trash} iconColor="red" text="Delete" className="cursor-not-allowed"/>
         </DropdownMenuContent>
     </DropdownMenu>
 );
@@ -100,7 +117,7 @@ const BlogEntry = ({ id, title, isPublished }: {
                         </span>
                     </div>
                 </Link>
-                <BlogEntryDropdown isPublished={isPublished} />
+                <BlogEntryDropdown isPublished={isPublished} id={id} />
             </div>
         </div>
     );
@@ -128,12 +145,14 @@ const BlogSection = ({ title, blogs }: {
         </AccordionItem>
     </Accordion>
 );
+
 interface BlogProps {
     blogs: Post[];
 }
+
 export function SibarBlogSection({ blogs }: BlogProps) {
-    const publishedBlogs = blogs.filter((blog) => blog.status === Status.ACTIVE);
-    const draftBlogs = blogs.filter((blog) => blog.status !== Status.ACTIVE);
+    const publishedBlogs = blogs.filter((blog) => blog.published);
+    const draftBlogs = blogs.filter((blog) => !blog.published);
 
     return (
         <div>

@@ -1,8 +1,9 @@
 // import { User } from "@/types";
 import { User } from "next-auth";
 import { assertBlogOwner } from "./authorizations";
-import { updateBlog, createDraft, getUserBlogs } from "@/data-access/graphql/blogs";
-import { getLastDraftId } from "@/data-access/rest/blog";
+import { updateBlog, createDraft, getUserBlogs, toggleHeartBlog } from "@/data-access/graphql/blogs";
+import {  deletePost, getLastDraftId, toggleBookmarkBlog, unBookmarkBlog, } from "@/data-access/rest/blog";
+import { rateLimitByKey } from "@/lib/limiter";
 
 
 export async function updateBlogContentUseCase(
@@ -10,17 +11,23 @@ export async function updateBlogContentUseCase(
   {
     blogId,
     content,
-    title
+    title,
+    status
   }: {
     blogId: string;
     content: string;
     title: string;
+    status?: Status;
   }
 ) {
-  const updatePayload: { content: string; title?: string } = { content };
+  const updatePayload: { content: string; title?: string; status?: Status } = { content };
 
   if (title) {
     updatePayload.title = title;
+  }
+
+  if (status) {
+    updatePayload.status = status;
   }
 
   await assertBlogOwner(authenticatedUser, blogId);
@@ -39,6 +46,11 @@ export async function updateBlogTitleUseCase(
 ) {
   await assertBlogOwner(authenticatedUser, blogId);
   await updateBlog(authenticatedUser.accessToken, blogId, { title });
+}
+
+export async function deleteBlogUseCase(authenticatedUser: User, { blogId }: { blogId: string }) {
+  await assertBlogOwner(authenticatedUser, blogId);
+  await deletePost(authenticatedUser.accessToken, blogId);
 }
 
 export async function updateBlogStatusUseCase(
@@ -110,8 +122,29 @@ export async function getBlogsUserUseCase({
   return response.userPosts;
 }
 
-export function getLastDraftIdUseCase(
+export async function getLastDraftIdUseCase(
   authenticatedUser: User
 ) {
-  return getLastDraftId(authenticatedUser.accessToken);
+  return await getLastDraftId(authenticatedUser.accessToken);
+}
+
+export async function toggleBookmarkBlogUseCase(
+  authenticatedUser: User,
+  blogId: string
+): Promise<{ isBookmarked: boolean }> {
+  return await toggleBookmarkBlog({ token: authenticatedUser.accessToken, postId: blogId });
+}
+
+export async function unBookmarkBlogUseCase(
+  authenticatedUser: User,
+  blogId: string
+) {
+  return await unBookmarkBlog({ token: authenticatedUser.accessToken, postId: blogId });
+}
+
+export async function toggleHeartBlogUseCase(
+  authenticatedUser: User,
+  blogId: string
+) {
+  return await toggleHeartBlog(authenticatedUser.accessToken, blogId);
 }

@@ -4,15 +4,22 @@ import ReusableSidebar from '../../components/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Grid, NotepadText, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { getCurrentUser } from '@/lib/session';
 
-const DashboardSidebar: React.FC = () => {
+const DashboardSidebar: React.FC = async () => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return null;
+  }
+
   const header = (
     <div className="flex items-center gap-4">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        <AvatarImage src={user.image} alt="@shadcn" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-      <h1 className="text-lg font-bold">Bluefish93</h1>
+      <h1 className="text-lg font-bold">{user.firstname + ' ' + user.lastname}</h1>
     </div>
   );
 

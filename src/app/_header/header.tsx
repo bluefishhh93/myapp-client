@@ -25,10 +25,6 @@ import { MenuButton } from "./menu-button";
 import { getProfileImageFullUrl } from "../profile/profile-image";
 import { getProfile } from "@/data-access/graphql/users";
 import WriteButton from "./write-button";
-import { getLastDraftIdUseCase } from "@/use-case/blog";
-import { createDraftAction } from "../(blog)/action";
-import { error } from "console";
-import { redirect } from "next/navigation";
 import { User } from "next-auth";
 
 export async function Header() {

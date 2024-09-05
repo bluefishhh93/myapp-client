@@ -40,13 +40,14 @@ export const Loading: React.FC = () => {
     );
 };
 
-export default function BlogList() {
+export default function BlogList({bookmarkIds = [], isSignedIn, isHearted} : {bookmarkIds: string[], isSignedIn: boolean, isHearted: boolean}) {
     const { blogs, isError, isLoading, isReachingEnd, size, setSize } = useBlogs();
     const { ref, inView } = useInView(
         {
             threshold: 0,
         }
     );
+    const isBookmarked = (id: string) => bookmarkIds.includes(id);
 
     useEffect(() => {
         if (inView && !isReachingEnd) {
@@ -65,6 +66,9 @@ export default function BlogList() {
                         title={post.title}
                         coverImage="/default-cover.jpg"
                         content={post.content}
+                        // heartCount={post.}
+                        heartCount={0}
+                        isHearted={isHearted}
                         author={{
                             name: `${post.author.firstname} ${post.author.lastname}`,
                             avatar: post.author.image || '/default-avatar.jpg',
@@ -72,6 +76,8 @@ export default function BlogList() {
                         publishedAt={new Date(post.createdAt)}
                         readTime={calculateReadingTime(post.content)}
                         slug={post.id}
+                        isBookmarked={isBookmarked(post.id)}
+                        isSignedIn={isSignedIn}
                     />
                 ))}
                 {/* {isLoading && <Loading />} */}

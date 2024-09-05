@@ -2,7 +2,7 @@
 
 import ReusableSidebar from "@/components/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FilePlus, Settings, User } from 'lucide-react';
+import { ArrowLeftIcon, ArrowUpLeftIcon, ArrowUpLeftSquareIcon, FilePlus, Settings, User } from 'lucide-react';
 import CreateDraftButton from './create-draft-button';
 import { getCurrentUser } from '@/lib/session';
 import { getUserBlogs } from "@/data-access/graphql/blogs";
@@ -20,10 +20,21 @@ const BlogSidebar: React.FC = async () => {
   const header = (
     <div className="flex items-center gap-4">
       <Avatar>
-        <AvatarImage src={user.image} alt="@shadcn" />
+        <AvatarImage src={user.image ?? '/default-avatar.png'} alt="@shadcn" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-      <h1 className="text-lg font-bold">{user.firstname + ' ' + user.lastname}</h1>
+      <div>
+        {user.firstname && user.lastname && (
+          <h1 className="text-lg font-bold truncate">
+            {`${user.firstname} ${user.lastname}`.length > 20
+              ? `${user.firstname} ${user.lastname}`.slice(0, 20) + '...'
+              : `${user.firstname} ${user.lastname}`}
+          </h1>
+        )}
+        <p className="text-sm text-gray-600 dark:text-gray-400 truncate" title={user.email}>
+          {user.email!.length > 15 ? user.email!.slice(0, 15) + '...' : user.email}
+        </p>
+      </div>
     </div>
   );
 
@@ -37,10 +48,10 @@ const BlogSidebar: React.FC = async () => {
   const footer = (
     <nav className="flex flex-col gap-2">
       <a href="#" className="flex items-center py-3 px-4 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-slate-900 rounded-md">
-        <Settings className="mr-3" size={18} /> Settings
+        <Settings className="mr-3" size={18} /> Blog dashboard
       </a>
       <a href="#" className="flex items-center py-3 px-4 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-slate-900 rounded-md">
-        <User className="mr-3" size={18} /> Profile
+        <ArrowLeftIcon className="mr-3" size={18} /> Back to Hivedev
       </a>
     </nav>
   );

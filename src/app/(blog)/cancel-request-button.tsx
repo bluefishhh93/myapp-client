@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/components/ui/use-toast";
 import { useServerAction } from 'zsa-react';
-import { CheckIcon, LoaderCircleIcon } from 'lucide-react';
-import { updateBlogContentAction, updateBlogStatusAction } from './action';
+import { LoaderCircleIcon } from 'lucide-react';
+import { updateBlogStatusAction } from './action';
 interface PublicButtonProps {
     blogId: string;
 }
@@ -14,21 +14,21 @@ enum Status {
     PENDING = 'PENDING'
 }
 
-const PublicButton = ({ blogId }: PublicButtonProps) => {
+const CancelRequestButton = ({ blogId }: PublicButtonProps) => {
     const { toast } = useToast();
     const { execute, isPending, error } = useServerAction(updateBlogStatusAction, {
         onError: ({ error }: any) => {
             toast({
                 title: 'Error',
                 description: error,
-                variant: 'destructive'
+                variant: 'failure'
             })
         },
         onSuccess: () => {
             toast({
                 title: 'Success',
-                description: 'Blog has been requested for review',
-                variant: 'success'
+                description: 'Request to publish the article has been cancelled.',
+                variant: 'warning'
             })
         }
     })
@@ -36,11 +36,11 @@ const PublicButton = ({ blogId }: PublicButtonProps) => {
 
     return (
         <Button
-              className={`text-white bg-blue-500 border border-blue-500 rounded-full py-2 px-4 hover:bg-blue-600 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800 dark:border-blue-700
-                ${isPending ? 'bg-blue-700 dark:bg-blue-900 cursor-not-allowed' : ''}`}// Darker color and disable cursor
+              className={`text-white bg-orange-500 border border-orange-500 rounded-full py-2 px-4 hover:bg-orange-600 dark:bg-orange-700 dark:text-white dark:hover:bg-orange-800 dark:border-orange-700
+                ${isPending ? 'bg-orange-700 dark:bg-orange-900 cursor-not-allowed' : ''}`}// Darker color and disable cursor
         onClick={() => {
             if (!isPending) {
-                execute({ blogId, status: Status.PENDING });
+                execute({ blogId, status: Status.INACTIVE });
                 redirect(`/draft/${blogId}`);
             }
         }}
@@ -50,10 +50,10 @@ const PublicButton = ({ blogId }: PublicButtonProps) => {
         {isPending ? (
             <LoaderCircleIcon className="animate-spin" /> // Spinning icon
         ) : (
-            "Public"
+            "Cancel"
         )}
     </Button>
 );
 }
 
-export default PublicButton;
+export default CancelRequestButton;

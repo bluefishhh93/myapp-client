@@ -31,9 +31,9 @@ const BlogPreviewOverlay: React.FC<BlogPreviewOverlayProps> = ({ isOpen, onClose
   );
 
   const MonitorFrame = ({ children }: { children: React.ReactNode }) => (
-    <div className="relative my-6 mx-auto" style={{ width: '1280px', height: '800px' }}>
-      <Image width={1280} height={800} src="/monitor-frame.png" alt="Monitor frame" className="absolute inset-0 w-full h-full" />
-      <div className="absolute inset-0 overflow-y-auto p-8" style={{ top: '60px', bottom: '160px', left: '40px', right: '40px' }}>
+    <div className="relative my-6 mx-auto" style={{ width: '1024px', height: '640px' }}>
+      <Image width={1024} height={640} src="/monitor-frame.png" alt="Monitor frame" className="absolute inset-0 w-full h-full" />
+      <div className="absolute inset-0 overflow-y-auto p-6" style={{ top: '48px', bottom: '128px', left: '32px', right: '32px' }}>
         {children}
       </div>
     </div>
@@ -43,18 +43,18 @@ const BlogPreviewOverlay: React.FC<BlogPreviewOverlayProps> = ({ isOpen, onClose
     <article className="bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
       <div className="p-6">
         <header className="mb-8 text-center">
-          <h1 className={`${previewMode === 'mobile' ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl md:text-4xl'} font-extrabold leading-tight mb-4 text-gray-900 dark:text-gray-100`}>
+          <h1 className={`${previewMode === 'mobile' ? 'text-xl sm:text-2xl' : 'text-xl sm:text-2xl md:text-3xl'} font-extrabold leading-tight mb-4 text-gray-900 dark:text-gray-100`}>
             {post.title}
           </h1>
           <div className={`flex ${previewMode === 'mobile' ? 'flex-col' : 'flex-row'} items-center justify-center text-gray-500 dark:text-gray-400 mb-6 ${previewMode === 'mobile' ? 'space-y-4' : 'space-x-4'}`}>
             <div className="flex items-center space-x-2">
-              <Avatar className={previewMode === 'mobile' ? 'w-8 h-8' : 'w-10 h-10'}>
+              <Avatar className={previewMode === 'mobile' ? 'w-8 h-8' : 'w-9 h-9'}>
                 <AvatarImage src={post.author.image} alt={`${post.author.firstname} ${post.author.lastname}`} />
                 <AvatarFallback>
                   {post.author.firstname?.charAt(0) || ''}{post.author.lastname?.charAt(0) || ''}
                 </AvatarFallback>
               </Avatar>
-              <p className={`${previewMode === 'mobile' ? 'text-sm' : 'text-lg'} font-medium text-gray-800 dark:text-gray-200`}>
+              <p className={`${previewMode === 'mobile' ? 'text-sm' : 'text-base'} font-medium text-gray-800 dark:text-gray-200`}>
                 {post.author.firstname} {post.author.lastname}
               </p>
             </div>

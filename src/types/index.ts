@@ -63,6 +63,8 @@ type Post = {
     createdAt: Date;
     updatedAt: Date;
     status: Status;
+    heartCount: number;
+    
 };
 
 type GetPostByIdResponse = {
@@ -72,6 +74,47 @@ type GetPostByIdResponse = {
 type GetUserPostsResponse = {
     userPosts: Post[];
 };
+
+type GetBookmarkedPostIdsResponse = {
+    bookmarkedPosts: { id: string }[];
+}
+
+
+type GetBookmarkedPostsResponse = {
+    bookmarkedPosts: Post[];
+}
+
+type ToggleInteractionResponse = {
+    interactWithPost: {
+        type: string;
+        postId: string;
+        userId: string;
+    }
+
+}
+interface InteractionResponse {
+    type: string;
+    postId: string;
+    userId: string;
+  }
+  
+
+type GetHeartCountResponse = {
+    postInteractions: {
+        heart: number;
+    };
+}
+
+interface UserInteraction {
+    bookmarked: boolean;
+    hearted: boolean;
+  }
+  
+
+type PostInteractionResponse = {
+    heart: number;
+    likedBy: User[];
+}
 
 type UpdatePostResponse = {
     updatePost: Post;
