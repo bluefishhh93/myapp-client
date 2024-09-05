@@ -29,7 +29,7 @@ export async function assertBlogOwner(
 }
 
 // Add this to your environment variables or configuration file
-const API_BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXTAUTH_URL;
 
 export async function registerUserUseCase(email: string, password: string, role: 'USER' | 'ADMIN' = 'USER') {
     // register user

@@ -12,7 +12,7 @@ export function ImageUploader({ onUploadSuccess }: ImageUploaderProps) {
   return (
     <CldUploadWidget
       uploadPreset={env.NEXT_PUBLIC_UPLOAD_PRESET}
-      signatureEndpoint={`http://localhost:3000/api/sign-cloudinary-params`}
+      signatureEndpoint={`${process.env.NEXTAUTH_URL}/api/sign-cloudinary-params`}
       onSuccess={async (result) => {
         if (typeof result.info === "object" && "secure_url" in result.info) {
           await onUploadSuccess(result.info.secure_url);          
