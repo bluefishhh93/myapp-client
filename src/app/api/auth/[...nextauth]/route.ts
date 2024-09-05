@@ -1,7 +1,5 @@
 // src/pages/api/auth/[...nextauth].ts
 import NextAuth, { NextAuthOptions, User } from "next-auth";
-import { JWT } from "next-auth/jwt";
-import { jwtDecode } from 'jwt-decode';
 import CredentialsProvider from "next-auth/providers/credentials";
 import { GraphQLClient, gql } from 'graphql-request';
 import { isTokenExpired } from "@/app/utils";
