@@ -16,8 +16,8 @@ const ProfilePage = async () => {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-2 gap-8">
+    <div className="space-y-8 p-4 md:p-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ProfileImage />
         <ProfileName firstname={profile.firstname!} lastname={profile.lastname!} />
       </div>

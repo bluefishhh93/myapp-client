@@ -53,18 +53,18 @@ async function ProfileImageContent() {
 
     return (
         <div className="flex flex-col items-center space-y-4">
-            <div className="relative">
-                <Image
-                    src={getProfileImageFullUrl(profile.image)}
-                    width={200}
-                    height={200}
-                    className="h-[200px] object-cover rounded-full border-4 border-gray-200 shadow-lg dark:border-gray-800"
-                    alt="Profile image"
-                />
-                <span className="absolute bottom-0 right-0 p-1 bg-white rounded-full shadow-md">
-                    <AvatarUploader onUploadSuccess={saveAvatar} />
-                </span>
-            </div>
+          <div className="relative w-full max-w-[200px]">
+            <Image
+              src={getProfileImageFullUrl(profile.image)}
+              width={200}
+              height={200}
+              className="w-full h-auto aspect-square object-cover rounded-full border-4 border-gray-200 shadow-lg dark:border-gray-800"
+              alt="Profile image"
+            />
+            <span className="absolute bottom-0 right-0 p-1 bg-white rounded-full shadow-md">
+              <AvatarUploader onUploadSuccess={saveAvatar} />
+            </span>
+          </div>
         </div>
-    )
+      )
 }

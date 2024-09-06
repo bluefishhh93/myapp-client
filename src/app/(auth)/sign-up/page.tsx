@@ -27,6 +27,7 @@ export default function RegisterPage() {
   const { toast } = useToast();
   const { execute, isPending, error } = useServerAction(signUpAction, {
     onError: ({ error }: any) => {
+      console.log(error);
       toast({
         title: "Registration Error",
         description: error,

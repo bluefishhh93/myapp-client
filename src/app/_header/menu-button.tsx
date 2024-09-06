@@ -21,7 +21,7 @@ export function MenuButton() {
             href="/dashboard"
             className="flex cursor-pointer items-center gap-2"
           >
-            <UsersIcon className="h-4 w-4" /> Your Groups
+            <UsersIcon className="h-4 w-4" /> Your Blogs
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
