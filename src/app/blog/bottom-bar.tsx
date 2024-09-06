@@ -35,7 +35,6 @@ export function TooltipCustom({ children, tooltipText }: TooltipProps) {
 export function BottomBar({ isBookmarked, userId, isHearted, heartCount, slug }: { isBookmarked: boolean, userId?: string, isHearted: boolean, heartCount: number, slug: string }) {
   return (
     <div className="fixed bottom-4 left-0 right-0 mx-auto px-4 w-max border bg-white dark:bg-gray-800 shadow-lg rounded-full flex justify-around items-center space-x-4 z-50">
-      <TooltipProvider>
         <div className="flex items-center">
           {
             userId ? (
@@ -66,7 +65,6 @@ export function BottomBar({ isBookmarked, userId, isHearted, heartCount, slug }:
           <Separator />
           {renderIconButton("More Options", <MoreVertical className="w-5 h-5" />)}
         </div>
-      </TooltipProvider>
     </div>
   );
 }

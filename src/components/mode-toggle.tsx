@@ -19,7 +19,6 @@ export function ModeToggle() {
   };
 
   return (
-    <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button 
@@ -37,6 +36,5 @@ export function ModeToggle() {
           <p>{theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}</p>
         </TooltipContent>
       </Tooltip>
-    </TooltipProvider>
   );
 }

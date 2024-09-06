@@ -13,7 +13,6 @@ interface SidebarButtonProps {
 }
 
 const SidebarButton: React.FC<SidebarButtonProps> = ({ onClick, isOpen }) => (
-  <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild>
         <button
@@ -42,7 +41,6 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({ onClick, isOpen }) => (
         <p>{isOpen ? 'Close sidebar' : 'Open sidebar'}</p>
       </TooltipContent>
     </Tooltip>
-  </TooltipProvider>
 );
 
 interface ReusableSidebarProps {
