@@ -2,7 +2,6 @@
 "use client";
 
 import { CldUploadWidget } from "next-cloudinary";
-import { env } from "@/env";
 import { Upload } from "lucide-react";
 import { useSession } from "next-auth/react";
 interface AvatarUploaderProps {
@@ -13,8 +12,8 @@ export function AvatarUploader({ onUploadSuccess }: AvatarUploaderProps) {
   const { data: session, update } = useSession()
   return (
     <CldUploadWidget
-      uploadPreset={env.NEXT_PUBLIC_UPLOAD_PRESET}
-      signatureEndpoint={`${process.env.NEXTAUTH_URL}/api/sign-cloudinary-params`}
+      uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
+      signatureEndpoint="/api/sign-cloudinary-params"
       onSuccess={async (result) => {
         if (typeof result.info === "object" && "secure_url" in result.info) {
           await onUploadSuccess(result.info.secure_url);

@@ -2,7 +2,6 @@
 "use client";
 
 import { CldUploadWidget } from "next-cloudinary";
-import { env } from "@/env";
 import { Image, Upload } from "lucide-react";
 interface ImageUploaderProps {
   onUploadSuccess: (url: string) => void;
@@ -11,11 +10,11 @@ interface ImageUploaderProps {
 export function ImageUploader({ onUploadSuccess }: ImageUploaderProps) {
   return (
     <CldUploadWidget
-      uploadPreset={env.NEXT_PUBLIC_UPLOAD_PRESET}
-      signatureEndpoint={`${process.env.NEXTAUTH_URL}/api/sign-cloudinary-params`}
+      uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
+      signatureEndpoint="/api/sign-cloudinary-params"
       onSuccess={async (result) => {
         if (typeof result.info === "object" && "secure_url" in result.info) {
-          await onUploadSuccess(result.info.secure_url);          
+          await onUploadSuccess(result.info.secure_url);            
         }
       }}
       options={{
